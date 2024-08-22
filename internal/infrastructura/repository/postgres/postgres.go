@@ -2,11 +2,13 @@ package postgres
 
 import (
 	"database/sql"
+	"fmt"
 	"library/internal/entity/book"
 	"library/internal/infrastructura/repository"
 	"log"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/google/uuid"
 )
 
 type BookPostgres struct {
@@ -18,10 +20,12 @@ func NewBookPostgres(db *sql.DB) repository.BookRepository {
 }
 
 func (b *BookPostgres) AddBook(req book.CreateBook) error {
+	id := uuid.New().String()
+	fmt.Println(req.Author)
 	sql, args, err := squirrel.
 		Insert("book").
-		Columns("title", "author", "published_date", "isbn").
-		Values(req.Title, req.Author, req.Published_Date, req.Isbn).
+		Columns("id","title", "author", "published_date", "isbn").
+		Values(id,req.Title, req.Author, req.Published_Date, req.Isbn).
 		PlaceholderFormat(squirrel.Dollar).ToSql()
 
 	if err != nil {
@@ -96,7 +100,7 @@ func (b *BookPostgres) GetAllBooks() ([]*book.Book, error) {
 	return Books, nil
 }
 
-func (b *BookPostgres) UpdateBook(req book.Book) error {
+func (b *BookPostgres) UpdateBook(req *book.Book) error {
 	sql, args, err := squirrel.
 		Update("book").
 		Set("title", req.Title).

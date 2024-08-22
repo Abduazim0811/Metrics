@@ -12,11 +12,11 @@ import (
 
 // BookHandler handles book-related requests
 type BookHandler struct {
-	service service.BookService
+	service *service.BookService
 }
 
 // NewBookHandler creates a new BookHandler
-func NewBookHandler(service service.BookService) *BookHandler {
+func NewBookHandler(service *service.BookService) *BookHandler {
 	return &BookHandler{service: service}
 }
 
@@ -39,6 +39,7 @@ func (b *BookHandler) CreateBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
+
 
 	err := b.service.Createbook(book)
 
@@ -113,7 +114,7 @@ func (b *BookHandler) UpdateBook(c *gin.Context) {
 
 	req.ID = id
 
-	err := b.service.Updatebook(req)
+	err := b.service.Updatebook(&req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

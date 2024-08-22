@@ -9,7 +9,7 @@ import (
 )
 
 func OpenSql() (*sql.DB, error) {
-	db, err := sql.Open("postgres://postgres:Abdu0811@localhost:5432/n9?sslmode=disable", "postgres")
+	db, err := sql.Open("postgres","postgres://postgres:Abdu0811@localhost:5432/n9?sslmode=disable")
 	if err != nil {
 		log.Println("failed to open sql:", err)
 		return nil, err
@@ -31,7 +31,7 @@ func Handler() *handler.BookHandler {
 
 	repo := postgres.NewBookPostgres(db)
 	service := service.NewBookService(repo)
-	handler := handler.NewBookHandler(*service)
+	handler := handler.NewBookHandler(service)
 
 	return handler
 }

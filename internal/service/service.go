@@ -25,7 +25,7 @@ func (b *BookService) GetAllbooks()([]*book.Book, error){
 	return b.repo.GetAllBooks()
 }
 
-func (b *BookService) Updatebook(req book.Book) error{
+func (b *BookService) Updatebook(req *book.Book) error{
 	return b.repo.UpdateBook(req)
 }
 
