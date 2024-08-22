@@ -35,6 +35,7 @@ func (b *BookHandler) CreateBook(c *gin.Context) {
 	var book book.CreateBook
 
 	if err := c.ShouldBindJSON(&book); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request"})
 		return
 	}
@@ -42,6 +43,7 @@ func (b *BookHandler) CreateBook(c *gin.Context) {
 	err := b.service.Createbook(book)
 
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
