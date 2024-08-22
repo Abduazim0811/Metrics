@@ -19,7 +19,7 @@ func NewBookPostgres(db *sql.DB) repository.BookRepository {
 
 func (b *BookPostgres) AddBook(req book.CreateBook) error {
 	sql, args, err := squirrel.
-		Insert("books").
+		Insert("book").
 		Columns("title", "author", "published_date", "isbn").
 		Values(req.Title, req.Author, req.Published_Date, req.Isbn).
 		PlaceholderFormat(squirrel.Dollar).ToSql()
@@ -41,7 +41,7 @@ func (b *BookPostgres) GetByIdBook(id string) (*book.Book, error) {
 	var book book.Book
 	sql, args, err := squirrel.
 		Select("*").
-		From("books").
+		From("book").
 		Where(squirrel.Eq{"id": id}).
 		PlaceholderFormat(squirrel.Dollar).ToSql()
 	if err != nil {
@@ -63,7 +63,7 @@ func (b *BookPostgres) GetAllBooks() ([]*book.Book, error) {
 
 	sql, args, err := squirrel.
 		Select("*").
-		From("books").
+		From("book").
 		PlaceholderFormat(squirrel.Dollar).ToSql()
 	if err != nil {
 		log.Println("Unable to generate SQL for GetAllBooks:", err)
